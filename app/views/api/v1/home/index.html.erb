@@ -1,9 +1,10 @@
 <h1>This is Jonathan's Custom App to display quantities to the product page</h1>
 <p>Email me at jonathanahernnyc@gmail.com if you'd like to change something</p>
 
-<%= content_tag :div ,
-id: "hello-react" ,
-data: {
-name: "person"
-}.to_json do %>
-<% end %>
+<h2>Products</h2>
+
+<ul>
+  <% @products.each do |product| %>
+    <li><%= link_to product.title, "https://#{@current_shopify_session.domain}/admin/products/#{product.id}", target: "_top" %></li>
+  <% end %>
+</ul>
