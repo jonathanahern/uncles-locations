@@ -5,7 +5,6 @@ class Api::V1::FrontEndController < ApplicationController
     # @stored_products = StoredProduct.belongs_to_shop(@shop)
     # render json: @stored_products
     # @product = ShopifyAPI::Product.find(params[:prodID])
-    # ShopifyAPI::Session.setup(api_key: 32aa3ed78fdf129f8ef47cd46c9be022, secret: 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)
     # shopify_session = ShopifyAPI::Session.new(domain: params[:shop], api_version: "2020-04", token: nil);
     # permission_url = shopify_session.create_permission_url(scope, "https://my_redirect_uri.com", { state: "My Nonce" })
     # @products = ShopifyAPI::Product.find(:all, params: { limit: 10 })
