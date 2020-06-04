@@ -1,8 +1,8 @@
 var url = window.location.href;
 var shop = window.location.host;
 var locations = {};
-
-if (url.includes('/products/') && url.includes('794764016345')) {
+// && url.includes('794764016345')
+if (url.includes('/products/')) {
     console.log("this works at least");
 
     let prodID = meta.product.id;
