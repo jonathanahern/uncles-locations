@@ -32,6 +32,7 @@ if (url.includes('/products/') && url.includes('794764016345')) {
             a.appendChild(storeName);
             a.title = storeNameLink;
             a.href = storeHrefLink; 
+            a.target = "_blank";
 
             let newStr = ", QTY: " + subArr[1];
             let textnode = document.createTextNode(newStr);
@@ -39,7 +40,7 @@ if (url.includes('/products/') && url.includes('794764016345')) {
             qtyEle.appendChild(a);
             qtyEle.appendChild(textnode);
             containUL.appendChild(qtyEle);
-            
+
         });
     }
 }
