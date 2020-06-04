@@ -23,17 +23,23 @@ if (url.includes('/products/') && url.includes('794764016345')) {
         containUL = document.getElementById("quantities_container");
         containUL.innerHTML = "";
         arr.forEach(subArr => {
-            let storeName = subArr[0].split("&")[0];
-            let storeLink = subArr[0].split("&")[1];
-            let aEle = document.createElement("a");
-            aEle.href = storeLink;
-            aEle.innerHTML = storeName;
+
+            let storeHrefLink = subArr[0].split("&")[1];
+            let storeNameLink = subArr[0].split("&")[0];
+
+            let a = document.createElement("a");
+            let storeName = document.createTextNode(storeNameLink);
+            a.appendChild(storeName);
+            a.title = storeNameLink;
+            a.href = storeHrefLink; 
+
             let newStr = ", QTY: " + subArr[1];
             let textnode = document.createTextNode(newStr);
             let qtyEle = document.createElement("li");
-            qtyEle.appendChild(aEle);
+            qtyEle.appendChild(a);
             qtyEle.appendChild(textnode);
             containUL.appendChild(qtyEle);
+            
         });
     }
 }
