@@ -8,7 +8,17 @@ class AppProxyController < ApplicationController
   include ShopifyApp::AppProxyVerification
 
   def index
-    ShopifyAPI::Session.setup(api_key: ENV['api_key'], secret: ENV['api_secret'])
+
+    locations = {
+      "79065841797" => "Bellevue Crossroads Mall",
+      "78964031621" =>"Redmond Towncenter",
+      "77614874757" =>"Spokane Valley Mall"
+      # "77411942533" =>"Downtown Spokane"
+    }
+
+    locationsInventory = []
+  
+    ShopifyAPI::Session.setup(api_key: ShopifyApp.configuration.api_key, secret: ShopifyApp.configuration.secret)
     uncToken = Shop.first.shopify_token;
     session = ShopifyAPI::Session.new(domain: params[:shop] , token: uncToken, api_version: "2020-04")
     ShopifyAPI::Base.activate_session(session)
@@ -18,7 +28,7 @@ class AppProxyController < ApplicationController
     client = ShopifyAPI::GraphQL.client
 
     query = ShopifyAPI::GraphQL.client.parse <<-'GRAPHQL'
-      query getVariantByID($id: ID!) {
+      query ($id: ID!) {
         productVariant(id: $id) {
           id
           title
@@ -29,14 +39,39 @@ class AppProxyController < ApplicationController
       }
     GRAPHQL
 
-    variables = {
-      "id": `gid://shopify/ProductVariant/#{params[varID]}`
-    }
+    varID = params[:varID]
+    result = ShopifyAPI::GraphQL.client.query( query, variables: { id: "gid://shopify/ProductVariant/#{varID}" })
+    invID = result.data.product_variant.inventory_item.id.split('/').pop
+      
+    queryLoc = ShopifyAPI::GraphQL.client.parse <<-'GRAPHQL'
+      query($id: ID!) {
+      inventoryItem(id: $id) {
+        id
+        inventoryLevels (first:4) {
+          edges {
+            node {
+              id
+              available
+            }
+          }
+        }
+      }
+      }
+    GRAPHQL
 
-    result = ShopifyAPI::GraphQL.client.query(query,variables)
-    
-    
-    render json: {"Shop": result.data}
+    resultLoc = ShopifyAPI::GraphQL.client.query( queryLoc, variables: { id: "gid://shopify/InventoryItem/#{invID}" })
+    locArr = resultLoc.data.inventory_item.inventory_levels.edges
+
+    locArr.each do |ele|
+      locNum = ele.node.id.split("?")[0].split("/").pop;
+      num = ele.node.available;
+      if (locations.has_key?(locNum))
+        locName = locations[locNum];
+        locationsInventory << [locName,num]
+      end
+    end
+
+    render json: {"Inventory": locationsInventory }
 
   end
 
@@ -60,7 +95,12 @@ end
     # inventory_levels = ShopifyAPI::InventoryLevel.find(:all, :params => {:inventory_item_ids => inventoryID.to_s})
 # => array_of_inventory_levels
 
-#     {id: 45213089925, name: "Bellevue Crossroads Mall", address1: "15600 NE 8th St", address2: "Suite K10", city: "Bellevue", …}
+#    {id: 45213089925, name: "Bellevue Crossroads Mall", address1: "15600 NE 8th St", address2: "Suite K10", city: "Bellevue", …}
 # 1: {id: 43564302469, name: "Downtown Spokane", address1: "404 W Main", address2: "", city: "Spokane", …}
 # 2: {id: 45111574661, name: "Redmond Towncenter", address1: "7325 166th Avenue Northeast", address2: "f150", city: "Redmond", …}
 # 3: {id: 43767038085, name: "Spokane Valley Mall",
+
+# 77411942533: 2 Downtown Spokane
+# 77614874757: 1 Spokane Valley Mall
+# 78964031621: 4 Redmond
+# 79065841797: 1 Bellevue Crossroads Mall
