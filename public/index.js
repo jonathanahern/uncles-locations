@@ -3,6 +3,7 @@ var shop = window.location.host;
 var locations = {};
 
 if (url.includes('/products/') && url.includes('794764016345')) {
+    console.log("this works at least");
 
     let prodID = meta.product.id;
     let varID = meta.product.variants[0].id;
