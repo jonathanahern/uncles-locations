@@ -12,7 +12,7 @@ class AppProxyController < ApplicationController
     locations = {
       "79065841797" => "Bellevue Crossroads Mall&https://www.unclesgames.com/pages/crossroads-mall",
       "78964031621" =>"Redmond Towncenter&https://www.unclesgames.com/pages/redmond-town-center",
-      "77614874757" =>"Spokane Valley Mall&https://www.unclesgames.com/pages/spokane-valley-uncles"
+      "77614874757" =>"Spokane Valley Mall&https://www.unclesgames.com/pages/spokane-valley-uncles",
       "77411942533" =>"Downtown Spokane&https://https://www.unclesgames.com/pages/downtown-spokane-uncles"
     }
 

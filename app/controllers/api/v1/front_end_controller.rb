@@ -22,7 +22,6 @@ class Api::V1::FrontEndController < ApplicationController
     # permission_url = shopify_session.create_permission_url(scope, "https://my_redirect_uri.com", { state: "My Nonce" })
 
     # @shop = Shop.find_by_shopify_domain(params[:shop])
-    # debugger;
     # render json: "It worked kind of"
   end
 end
