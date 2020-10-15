@@ -10,7 +10,7 @@ ShopifyApp.configure do |config|
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
   config.scripttags = [
-    {event:'onload', src: 'https://uncles-locations-custom.herokuapp.com/insert.js'}
+    {event:'onload', src: 'https://uncles-locations-custom.herokuapp.com/index.js'}
   ]
 end
 
