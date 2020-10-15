@@ -3,7 +3,7 @@ var shop = window.location.host;
 var locations = {};
 // && url.includes('794764016345')
 if (url.includes('/products/')) {
-    console.log("this works at least");
+    // console.log("this works at least");
 
     let prodID = meta.product.id;
     let varID = meta.product.variants[0].id;
@@ -13,9 +13,10 @@ if (url.includes('/products/')) {
     })
         .then(res => res.json())
         .then(resp => {
-            if ('Inventory' in resp) {
-                fillInInventory(resp["Inventory"]);
-            }
+            console.log("response", resp)
+            // if ('Inventory' in resp) {
+            //     fillInInventory(resp["Inventory"]);
+            // }
         })
 
     function fillInInventory(arr){
