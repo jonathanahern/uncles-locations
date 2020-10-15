@@ -9,6 +9,9 @@ ShopifyApp.configure do |config|
   config.after_authenticate_job = false
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
+  config.scripttags = [
+    {event:'onload', src: 'https://uncles-locations-custom.herokuapp.com/insert.js'}
+  ]
 end
 
 # ShopifyApp::Utils.fetch_known_api_versions                        # Uncomment to fetch known api versions from shopify servers on boot
